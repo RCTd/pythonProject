@@ -4,8 +4,12 @@ mutex = threading.Lock()
 async def factorial(name, queue):
     f = 0
     mutex.acquire()
-    number= queue.pop()
+    try:
+        number= queue.pop()
+    except:
+        number=0
     mutex.release()
+
     for i in range(1, number+1):
         print(f"Task {name}: Compute Sum({i})...")
         await asyncio.sleep(1)
@@ -17,7 +21,8 @@ async def main(queue):
         factorial("A",queue),
         factorial("B",queue),
         factorial("C",queue),
-        factorial("D",queue)
+        factorial("D",queue),
+        factorial("E",queue)
     )
 if __name__ == '__main__':
     queue=[]
